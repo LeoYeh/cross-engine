@@ -1,0 +1,103 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta name="viewport" target-densitydpi="device-dpi" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <title></title>
+    <script type="text/javascript" src="../corejs/SourceInclude.js"></script>
+    <script type="text/javascript" src="RMR.js"></script>
+    <script type="text/javascript">
+        window.globalFlag = true;
+        SourceInclude.includeCore();
+        SourceInclude.includeMediaCss();
+        SourceInclude.includeTween();
+        SourceInclude.includeBox2d();
+    </script>
+    <style type="text/css">
+    </style>
+</head>
+
+<body>
+    <div id="mainScreen" style="background-color:#FF3300;">
+        <div id="mainMenu" style="background-image: url(../coreImg/menuBk.jpg)"></div>
+        <div id="menuLogo" style="background-image: url(../coreImg/logo.png)"></div>
+        <div id="txtLogo">
+            <img src="../coreImg/funmobi.png" />
+            <input type="button" onclick="fitScreen();" value="fitScreen">
+        </div>
+        <!-- site contents -->
+        <div id="detailDiv" style="padding: 0px; background-color:#FF3300;">
+            <div id="content">
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var maxW = 1024;
+        var maxH = 690;
+
+        var stage = new viewjs.CStage();
+        var mainMenu;
+        var menuLogo;
+        var txtLogo;
+        var iconHolder;
+        var detailDiv;
+
+
+        $(document).ready(function () {
+
+            //DebugView.setUp(document.body, 10, 10);
+            stage.initialize("mainScreen", "#222222", 320, 406, maxW, maxH);
+            stage.setAlign({ w: 320, h: maxH, ha: "C", va: "T" });
+            stage.setMask();
+
+            mainMenu = new viewjs.Display();
+            mainMenu.useDiv("mainMenu");
+            mainMenu.setSize("100%", 50);
+            mainMenu.setAlign({ w: "100%", h: 50, ha: "C", va: "B" });
+            stage.addChild(mainMenu);
+
+            menuLogo = new viewjs.Display();
+            menuLogo.useDiv("menuLogo");
+            menuLogo.setSize(33, 34);
+            menuLogo.setAlign({ w: 33, h: 34, ha: "L", va: "B", hoff: 8, voff: -8 });
+            stage.addChild(menuLogo);
+
+            txtLogo = new viewjs.Display();
+            txtLogo.useDiv("txtLogo");
+            txtLogo.setSize(200, 25);
+            txtLogo.setAlign({ w: 200, h: 25, ha: "R", va: "B", hoff: -15, voff: -15 });
+            stage.addChild(txtLogo);
+
+            detailDiv = new viewjs.Display();
+            detailDiv.useDiv("detailDiv");
+            detailDiv.setSize(320, 250);
+            detailDiv.setAlign({ w: 320, h: 356, ha: "C", va: "T", hoff: 0, voff: 0 });
+            stage.addChild(detailDiv);
+
+            stage.alignUpdated = function (sizeW, sizeH) {
+                if (sizeH > 406) {
+                    detailDiv.movey((sizeH - 406) * .5);
+                } else {
+                    detailDiv.movey(0);
+                }
+            }
+            $("#content").load(Util.getQueryValue("path"), function () {
+                stage.alignStage();
+            });
+            stage.alignStage();
+        });
+        
+        function fitScreen(){
+            //the loaded child stage
+            if(gameStage!=null){
+                var toHeight = $(window).height() - 70;
+                if(toHeight>600) toHeight = 600;
+                gameStage.scaleToFit(1024,toHeight);
+            }
+        }
+
+    </script>
+
+</body>
+</html>

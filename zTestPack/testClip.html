@@ -1,0 +1,95 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <title></title>
+    <!-- Test display items -->
+    <script type="text/javascript" src="../corejs/SourceInclude.js"></script>
+    <script type="text/javascript">
+        if (window["globalFlag"] == undefined) {
+            SourceInclude.includeCore();
+            SourceInclude.includeGameCss();
+        } //include all core js and css
+    </script>
+</head>
+
+<body>
+
+    <!--- test clip 效能測試 alpha + clip 數量 -->
+    <div id="gameStage" style="position: absolute; left:0px; top:0px;"></div>
+
+    <script type="text/javascript">
+
+        var gameStage = new viewjs.CStage();
+        var assetLoader;
+        var clips = [];
+
+        var amt = 20;
+        if (Util.getQueryValue("amt") != "") {
+            amt = Number(Util.getQueryValue("amt"));
+        }
+
+        $(document).ready(function () {
+
+            gameStage.alignStage();
+            gameStage.initialize("gameStage", "#336600", 320, 356, 320, 356);
+            assetLoader = new viewjs.AssetLoader();
+            assetLoader.initialize(["mario.xml"]);
+            assetLoader.itemLoaded = function (result) { };
+            assetLoader.allItemLoaded = assetLoaded;
+            assetLoader.load();
+            gameStage.setMask();
+
+        });
+
+        function assetLoaded(result) {
+            var frameInfo = { "stand": [0], "walk": [1, 3], "jump": [4], "swim": [5, 8], "die": [9] };
+            var clip;
+            for (var s = 0; s < amt; s++) {
+                clip = new viewjs.Clip();
+                clip.setSize(32, 32);
+                gameStage.addChild(clip);
+                clip.asClip("mario.png", assetLoader.assets["mario.xml"], "mario", frameInfo);
+                if (Math.random() > .5) {
+                    clip.playLoop("walk");
+                    clip.lenx = Math.round(Math.random() * 10);
+                } else {
+                    clip.playLoop("swim");
+                    clip.leny = Math.round(Math.random() * 10);
+                }
+                var rx = 30 + Math.round(Math.random() * 220);
+                var ry = 30 + Math.round(Math.random() * 220);
+                var ra = .2 + Math.round(Math.random() * 5) / 5;
+                var rr = Math.round(Math.random() * 360);
+                var rs = 1.2 + Math.round(Math.random() * 10) / 10;
+                clip.move(rx, ry);
+                clip.rotate(rr);
+                clip.setAlpha(ra);
+                clip.scale(rs, rs);
+                clips.push(clip);
+                
+            }
+            Render.addCallBack(gameRender);
+            Render.addFPSWatch($("body"), 10, 10);
+            Render.start();
+
+        }
+
+        var timePass = 0;
+        function gameRender(timeDiff) {
+            timePass++;
+            gameStage.playUpdate(timeDiff);
+            for (var s = 0; s < amt; s++) {
+                clips[s].rotate(clips[s].deg + 5);
+                if (clips[s].lenx) {
+                    clips[s].x += Math.cos(timePass * .1) * clips[s].lenx;
+                } else {
+                    clips[s].y += Math.cos(timePass * .1) * clips[s].leny;
+                }
+            }
+
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <script type="text/javascript" src="../corejs/SourceInclude.js"></script>
+    <!-- NOTICE THAT RMR.js must also be included from parent html !!!! -->
+    <script type="text/javascript" src="RMR.js"></script>
+    <script type="text/javascript">
+        if (window["globalFlag"] == undefined) {
+            SourceInclude.includeCore();
+            SourceInclude.includeBox2d();
+            SourceInclude.includeGameCss();
+        }
+    </script>
+</head>
+<body>
+    <!-- <canvas id="canvas" width="1200" height="356" style="background-color: #333333; position: absolute; left: 50px; top: 420px;"></canvas> -->
+    <div id="gameStage" style="position: absolute; left:0px; top:0px;"></div>
+    <script type="text/javascript">
+        document.ontouchmove = function (e) { e.preventDefault(); }
+        //-------------------------------------------------------------------
+        //GAME STAGE
+        //-------------------------------------------------------------------
+        var gameStage = new viewjs.CStage();
+        var rmrGame = new gamejs.RMRGame();
+        var assetLoader;
+        //DebugView.setUp(document.body, 50, 600);
+        var heroClip;
+
+        //$(document).ready(function () {
+            gameStage.alignStage();
+            gameStage.initialize("gameStage", "#6b8cff", 320, 356, 320, 356);
+            assetLoader = new viewjs.AssetLoader();
+            assetLoader.initialize(["mario.xml"]);
+            assetLoader.itemLoaded = function (result) { };
+            assetLoader.allItemLoaded = assetLoaded;
+            assetLoader.load();
+            gameStage.setMask();
+        //});
+
+        //-------------------------------------------------------------------
+        //BOX2D SETUP
+        //-------------------------------------------------------------------
+        SourceInclude.includeBox2dClass();
+        var gameWorld = new gamejs.GameWorld();
+        gameWorld.initialize(new b2Vec2(0, 5), false);
+        //gameWorld.initialize(new b2Vec2(0, 5), true, document.getElementById("canvas"));
+        gameWorld.world.m_allowSleep = false;
+        BoxUtil.gameWorld = gameWorld;
+        rmrGame.gameWorld = gameWorld;
+        var clis = new b2ContactListener;
+        clis.BeginContact = function (contact, manifold) {
+            //DebugView.trace("BeginContact ! " + contact);
+            heroClip.playLoop("walk");
+        };
+        clis.EndContact = function (contact, manifold) {
+            //var bodyA = contact.GetFixtureA().GetBody();
+            //var bodyB = contact.GetFixtureB().GetBody();
+            //DebugView.trace("EndContact  ! " + bodyA+" , "+bodyB);
+            heroClip.stopAt("jump");
+
+        };
+        gameWorld.world.SetContactListener(clis);
+        //-------------------------------------------------------------------
+        //-------------------------------------------------------------------
+
+
+        function assetLoaded(result) {
+
+            ///////////////////////////////
+            //START RUNNING
+            ///////////////////////////////
+            Render.addCallBack(gameRender);
+            Render.addFPSWatch($("body"), 10, 10);
+            Render.start();
+            ///////////////////////////////
+            //bind mouse click event for game control
+            ///////////////////////////////
+            $("body").mousedown(mouseDown);
+            $('body').bind("touchstart", mouseDown);
+            ///////////////////////////////
+            //bind key press event for game control
+            ///////////////////////////////
+
+            //create game by using custom class
+            rmrGame.initialize();
+
+
+            ///////////////////////////////
+            //HERO CLIP SETUP
+            ///////////////////////////////
+            heroClip = new viewjs.Clip();
+            heroClip.setSize(32, 32);
+            heroClip.fillBackground("#CC5588", 32, 32);
+            gameStage.addChild(heroClip);
+            var frameInfo = { "stand": [0], "walk": [1, 3], "jump": [4], "swim": [5, 8], "die": [9] };
+            heroClip.asClip("mario.png", assetLoader.assets["mario.xml"], "mario", frameInfo);
+            heroClip.playLoop("walk");
+            heroClip.setFPS(24);
+            heroClip.move(30, 30);
+
+            //wall clip setup
+            for (var s = 0; s < 3; s++) {
+                var bodyObj = rmrGame.plateSetA.list[s];
+                var wall = new viewjs.Clip();
+                wall.asTileImg("marioTile.png",bodyObj.w, bodyObj.h);
+                gameStage.addChild(wall);
+                bodyObj.body.SetUserData(wall);
+
+                bodyObj = rmrGame.plateSetB.list[s];
+                wall = new viewjs.Clip();
+                wall.asTileImg("marioTile.png", bodyObj.w, bodyObj.h);
+                gameStage.addChild(wall);
+                bodyObj.body.SetUserData(wall);
+            }
+
+        }
+
+        function gameRender(timeDiff) {
+            rmrGame.update();
+            gameWorld.update();
+            gameStage.playUpdate(timeDiff);
+
+            if (rmrGame.heroBody != null) {
+                var pos = rmrGame.heroBody.GetPosition();
+                heroClip.move(pos.x * 30 - 16, pos.y * 30 - 16);
+            }
+
+            for (b = gameWorld.world.GetBodyList() ; b; b = b.GetNext()) {
+                if (b.GetType() == b2Body.b2_staticBody) {
+                    var pos = BoxUtil.screenPt(b.GetPosition());
+                    if (b.GetUserData() != null) {
+                        var userData = b.GetUserData();
+                        var xto = pos.x - userData.width * .5;
+                        var yto = pos.y - userData.height * .5;
+                        userData.move(xto, yto);
+                    }
+                }
+            }
+        }
+
+        function mouseDown() {
+            rmrGame.jump();
+        }
+
+    </script>
+
+</body>
+</html>

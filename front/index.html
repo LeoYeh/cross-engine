@@ -1,0 +1,223 @@
+﻿<html>
+<head>
+    <meta name="viewport" target-densitydpi="device-dpi" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <title></title>
+    <script type="text/javascript" src="../corejs/SourceInclude.js"></script>
+    <script type="text/javascript">
+        SourceInclude.includeCore();
+        SourceInclude.includeMediaCss();
+        SourceInclude.includeTween();
+    </script>
+    <style type="text/css">
+        #aboutDiv, #SecBody {
+            background-color: #FFFFFF;
+            width: 100%;
+            height: 100%;
+            -webkit-box-shadow: 0px 2px 2px rgba(50, 50, 50, 0.6);
+            -moz-box-shadow: 0px 2px 2px rgba(50, 50, 50, 0.6);
+            box-shadow: 0px 2px 2px rgba(50, 50, 50, 0.6);
+        }
+    </style>
+</head>
+
+<body>
+    <div id="mainScreen" style="background-image: url(../coreImg/indexBk.jpg)">
+        <div id="mainMenu" style="background-image: url(../coreImg/menuBk.jpg)"></div>
+        <div id="menuLogo" style="background-image: url(../coreImg/logo.png)"></div>
+        <div id="txtLogo" style="background-image: url(../coreImg/funmobi.png)"></div>
+        <!-- site menu and pages -->
+        <div id="iconHolder" style="padding: 4px;">
+            <div style="width: 100%; height: 100%;">
+                <div>
+                    <img onclick="goSec('about');" src="../coreImg/iconAbout.png" style="float: left; padding: 8px;" />
+                </div>
+                <div>
+                    <img onclick="goSec('sec1');" src="../coreImg/iconPhysicA.png" style="float: left; padding: 8px;" />
+                </div>
+                <div>
+                    <img onclick="goSec('sec2');" src="../coreImg/iconPhysicB.png" style="float: left; padding: 8px;" />
+                </div>
+                <div>
+                    <img onclick="goSec('sec3');" src="../coreImg/iconGameDemo.png" style="float: left; padding: 8px;" />
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+        <!-- site contents -->
+        <div id="detailDiv" style="padding: 4px;">
+            <div style="width: 100%; height: 100%;">
+
+                <div id="aboutDiv">
+                    <div style="padding: 20px;">
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <img src="../coreImg/funmobiLogo.png" />
+                                </td>
+                                <td style="width: 25px;">
+                                    <img onclick="goSec('front')" src="../coreImg/closeBtn.png" />
+                                </td>
+                            </tr>
+                        </table>
+                        <p>
+                            Fun Mobi is a game portal designed for mobile devices. Our goal is to provide
+                            instant digital entertainment for every user anywhere anytime.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="SecBody">
+                    <div style="padding: 20px;">
+                        <table style="width: 100%">
+                            <tr>
+                                <td></td>
+                                <td style="width: 25px;">
+                                    <img onclick="goSec('front')" src="../coreImg/closeBtn.png" />
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="sec1">
+                            <br />
+                            <img src="../coreImg/physicAThumb.png" style="border: 1px solid #CCCCCC;" />
+                            <p>
+                                A demo shows the capability of how physic engine can be combined with render engine,
+                                and how well it performs.
+                            </p>
+                            <br />
+                            <a href="../zTestPack/testShell.html?path=pinball.html">Launch</a>
+                        </div>
+                        <div id="sec2">
+                            <img src="../coreImg/mario.jpg" style="border: 1px solid #CCCCCC;" />
+                            <p>
+                                A scrolling platform game demo, with phypic engine enabled.
+                            </p>
+                            <a href="../zTestPack/testShell.html?path=marioRun.html">Launch</a>
+                        </div>
+                        <div id="sec3">
+                            <p>
+                                perfermance test for visual rendnering
+                            </p>
+                            <a href="../zTestPack/testShell.html?path=testClip.html&amt=20">20 clips</a><br /><br />
+                            <a href="../zTestPack/testShell.html?path=testClip.html&amt=30">30 clips</a><br /><br />
+                            <a href="../zTestPack/testShell.html?path=testClip.html&amt=40">40 clips</a><br /><br />
+                            <a href="../zTestPack/testShell.html?path=testClip.html&amt=50">50 clips</a><br /><br />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+
+        var maxW = 1024;
+        var maxH = 690;
+
+        var stage = new viewjs.CStage();
+        var mainMenu;
+        var menuLogo;
+        var txtLogo;
+        var iconHolder;
+        var detailDiv;
+
+        $(document).ready(function () {
+
+            //DebugView.setUp(document.body, 10, 10);
+
+            stage.initialize("mainScreen", "#FFFFFF", 320, 356, maxW, maxH);
+            stage.setAlign({ w: 320, h: maxH, ha: "C", va: "T" });
+            stage.setMask();
+
+            mainMenu = new viewjs.Display();
+            mainMenu.useDiv("mainMenu");
+            mainMenu.setSize("100%", 50);
+            mainMenu.setAlign({ w: "100%", h: 50, ha: "C", va: "B" });
+            stage.addChild(mainMenu);
+
+            menuLogo = new viewjs.Display();
+            menuLogo.useDiv("menuLogo");
+            menuLogo.setSize(33, 34);
+            menuLogo.setAlign({ w: 33, h: 34, ha: "L", va: "B", hoff: 8, voff: -8 });
+            stage.addChild(menuLogo);
+
+            txtLogo = new viewjs.Display();
+            txtLogo.useDiv("txtLogo");
+            txtLogo.setSize(69, 14);
+            txtLogo.setAlign({ w: 69, h: 14, ha: "R", va: "B", hoff: -15, voff: -15 });
+            stage.addChild(txtLogo);
+
+            iconHolder = new viewjs.Display();
+            iconHolder.useDiv("iconHolder");
+            iconHolder.setSize(300, 286);
+            iconHolder.setAlign({ w: 300, h: 286, ha: "L", va: "T", hoff: 10, voff: 10 });
+            stage.addChild(iconHolder);
+
+            detailDiv = new viewjs.Display();
+            detailDiv.useDiv("detailDiv");
+            detailDiv.setSize(300, 286);
+            detailDiv.setAlign({ w: 300, h: 286, ha: "L", va: "T", hoff: 10, voff: 10 });
+            stage.addChild(detailDiv);
+            detailDiv.hide();
+
+            stage.alignUpdated = function (sizeW, sizeH) {
+                detailDiv.setSize(sizeW - 28, sizeH - 78);
+            }
+
+            stage.alignStage();
+
+        });
+
+        $(window).load(function() {
+              stage.alignStage();
+        });
+
+        function goSec(sec) {
+            switch (sec) {
+                case "front":
+                    detailDiv.tweenHide(.4, { "sx": .1, "sy": .1, ease: Expo.easeIn });
+                    break;
+                case "about":
+                    detailDiv.show();
+                    $("#SecBody").hide();
+                    $("#aboutDiv").show();
+                    detailDiv.scale(.4,.4);
+                    detailDiv.tween(.5, { "sx": 1, "sy": 1, ease: Back.easeOut });
+                    break;
+                case "sec1":
+                    detailDiv.show();
+                    $("#aboutDiv").hide();
+                    $("#SecBody").show();
+                    $("#sec1").show();
+                    $("#sec2").hide();
+                    $("#sec3").hide();
+                    detailDiv.scale(.4,.4);
+                    detailDiv.tween(.5, { "sx": 1, "sy": 1, ease: Back.easeOut });
+                    break;
+                case "sec2":
+                    detailDiv.show();
+                    $("#aboutDiv").hide();
+                    $("#SecBody").show();
+                    $("#sec2").show();
+                    $("#sec1").hide();
+                    $("#sec3").hide();
+                    detailDiv.scale(.4,.4);
+                    detailDiv.tween(.5, { "sx": 1, "sy": 1, ease: Back.easeOut });
+                    break;
+                case "sec3":
+                    detailDiv.show();
+                    $("#aboutDiv").hide();
+                    $("#SecBody").show();
+                    $("#sec3").show();
+                    $("#sec2").hide();
+                    $("#sec1").hide();
+                    detailDiv.scale(.4, .4);
+                    detailDiv.tween(.5, { "sx": 1, "sy": 1, ease: Back.easeOut });
+                    break;
+            }
+        }
+
+    </script>
+
+</body>
+</html>

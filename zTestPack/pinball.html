@@ -1,0 +1,134 @@
+﻿<!DOCTYPE>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+    <title></title>
+    <script type="text/javascript" src="../corejs/SourceInclude.js"></script>
+    <script type="text/javascript">
+        if (window["globalFlag"] == undefined) {
+            SourceInclude.includeCore();
+            SourceInclude.includeBox2d();
+        }
+    </script>
+</head>
+
+<body>
+
+    <!-- <canvas id="canvas" width="320" height="350" style="background-color: #333333; position: absolute; left: 400px; top: 300px;"></canvas> -->
+    <div id="gameStage" style="position: absolute;"></div>
+
+    <script type="text/javascript">
+        document.ontouchmove = function (e) { e.preventDefault(); }
+        //-------------------------------------------------------------------
+        //GAME STAGE
+        //-------------------------------------------------------------------
+        var gameStage = new viewjs.CStage();
+        var assetLoader;
+        //DebugView.setUp(document.body, 650, 10);
+
+        $(document).ready(function () {
+            gameStage.alignStage();
+            gameStage.initialize("gameStage", "#FFF", 320, 350, 320, 350);
+            gameStage.setMask();
+            //gameStage.scale(2, 2);
+            //gameStage.move(320 * .5, 356 * .5);
+            assetLoader = new viewjs.AssetLoader();
+            assetLoader.initialize(["ball.png", "ballBk.png"]);
+            assetLoader.itemLoaded = function (result) { };
+            assetLoader.allItemLoaded = assetLoaded;
+            assetLoader.load();
+            var bkImg = new viewjs.Clip();
+            bkImg.asSingleImg("ballBk.png", 320, 350);
+            gameStage.addChild(bkImg);
+        });
+
+        //-------------------------------------------------------------------
+        //BOX2D SETUP
+        //-------------------------------------------------------------------
+        SourceInclude.includeBox2dClass();
+        var gameWorld = new gamejs.GameWorld();
+        gameWorld.initialize(new b2Vec2(0, 2), false);
+        gameWorld.makeRectBorder(60, 320, 350, 0, 0);
+        BoxUtil.gameWorld = gameWorld;
+
+        function assetLoaded(result) {
+
+            var output = "";
+            output += '[{"w":10,"r":0,"type":2,"x":280,"h":240,"y":230},{"w":5,"r":0,"type":2,"x":40,"h":50,"y":325},{"w":5,"r":0,"type":2,"x":80,"h":50,"y":325},{"w":5,"r":0,"type":2,"x":120,"h":50,"y":325},{"w":5,"r":0,"t';
+            output += 'ype":2,"x":160,"h":50,"y":325},{"w":5,"r":0,"type":2,"x":200,"h":50,"y":325},{"w":5,"r":0,"type":2,"x":240,"h":50,"y":325},{"type":1,"r":5,"x":38,"y":120},{"type":1,"r":5,"x":78,"y":120},{"type":1,"r"';
+            output += ':5,"x":118,"y":120},{"type":1,"r":5,"x":158,"y":120},{"type":1,"r":5,"x":198,"y":120},{"type":1,"r":5,"x":238,"y":120},{"type":1,"r":5,"x":58,"y":150},{"type":1,"r":5,"x":98,"y":150},{"type":1,"r":5,"';
+            output += 'x":138,"y":150},{"type":1,"r":5,"x":178,"y":150},{"type":1,"r":5,"x":218,"y":150},{"type":1,"r":5,"x":38,"y":180},{"type":1,"r":5,"x":78,"y":180},{"type":1,"r":5,"x":118,"y":180},{"type":1,"r":5,"x":1';
+            output += '58,"y":180},{"type":1,"r":5,"x":198,"y":180},{"type":1,"r":5,"x":238,"y":180},{"type":1,"r":5,"x":58,"y":210},{"type":1,"r":5,"x":98,"y":210},{"type":1,"r":5,"x":138,"y":210},{"type":1,"r":5,"x":178,"';
+            output += 'y":210},{"type":1,"r":5,"x":218,"y":210},{"type":1,"r":5,"x":38,"y":240},{"type":1,"r":5,"x":78,"y":240},{"type":1,"r":5,"x":118,"y":240},{"type":1,"r":5,"x":158,"y":240},{"type":1,"r":5,"x":198,"y":2';
+            output += '40},{"type":1,"r":5,"x":238,"y":240},{"type":1,"r":5,"x":58,"y":270},{"type":1,"r":5,"x":98,"y":270},{"type":1,"r":5,"x":138,"y":270},{"type":1,"r":5,"x":178,"y":270},{"type":1,"r":5,"x":218,"y":270},';
+            output += '{"w":5,"r":0,"type":2,"x":322.5,"h":15,"y":54},{"w":5,"r":-14,"type":2,"x":320.5,"h":15,"y":39.5},{"w":5,"r":-29,"type":2,"x":315,"h":15,"y":26},{"w":5,"r":-45,"type":2,"x":306,"h":15,"y":14},{"w":5,"';
+            output += 'r":-59,"type":2,"x":294,"h":15,"y":5},{"w":5,"r":-75,"type":2,"x":280.5,"h":15,"y":-0.5},{"w":5,"r":-90,"type":2,"x":55,"h":15,"y":-2},{"w":5,"r":-104,"type":2,"x":41,"h":15,"y":0},{"w":5,"r":-119,"ty';
+            output += 'pe":2,"x":27,"h":15,"y":6},{"w":5,"r":-135,"type":2,"x":15,"h":15,"y":15},{"w":5,"r":-149,"type":2,"x":6,"h":15,"y":27},{"w":5,"r":-165,"type":2,"x":0,"h":15,"y":40}]';
+
+            var units = jQuery.parseJSON(output);
+            //alert(units.length);
+            var len = units.length;
+            for (var s = 0; s < len; s++) {
+                var unit = units[s];
+                //create a circle
+                if (unit.type == 1) {
+                    BoxUtil.makePtCircle(unit.x, unit.y, unit.r, true);
+                }
+                //create a box
+                if (unit.type == 2) {
+                    BoxUtil.makePtBox(unit.x, unit.y, unit.w, unit.h, unit.r, true);
+                }
+            }
+
+            $("#gameStage").mousedown(mouseDown);
+            $('#gameStage').bind("touchstart", mouseDown);
+
+            ///////////////////////////////
+            //START RUNNING
+            ///////////////////////////////
+            Render.addCallBack(gameRender);
+            Render.addFPSWatch($("body"), 0, 0);
+            Render.start();
+        }
+
+        function makeBall() {
+            var newBall = BoxUtil.makePtCircle(302, 320, 8, false, .5, .2, .4);
+            var power = Math.random() * -2 - 1;
+            var xpower = Math.round(Math.random() * 2);
+            newBall.ApplyImpulse(new b2Vec2(xpower, power), newBall.GetWorldCenter());
+
+            var clip = new viewjs.Clip();
+            clip.asSingleImg("ball.png", 16, 16);
+            gameStage.addChild(clip);
+            newBall.SetUserData({ "clip": clip });
+        }
+
+        function mouseDown(e) {
+            e.preventDefault();
+            makeBall();
+        }
+
+        function gameRender(timeDiff) {
+            gameWorld.update();
+            for (b = gameWorld.world.GetBodyList() ; b; b = b.GetNext()) {
+                if (b.GetType() == b2Body.b2_dynamicBody) {
+                    var pos = BoxUtil.screenPt(b.GetPosition());
+                    var ang = BoxUtil.screenDG(b.GetAngle());
+                    if (b.GetUserData() != null) {
+                        var userData = b.GetUserData();
+                        userData.clip.move(pos.x - 8, pos.y - 8);
+                        userData.clip.rotate(ang);
+                        if (pos.y > 400) {
+                            gameStage.removeChild(userData.clip);
+                            gameWorld.world.DestroyBody(b);
+                        }
+                    }
+                }
+
+            }
+        }
+
+    </script>
+
+</body>
+</html>
