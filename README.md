@@ -1,1 +1,1 @@
-read
+All purpose javascript framework for games and websites
