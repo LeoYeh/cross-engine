@@ -1,0 +1,102 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script type="text/ecmascript">
+
+        // ###### javascript pattern for observer and events
+        this.testns = this.testns || {};
+
+        (function (ns) {
+
+            // [--PRIVATE--]
+            var listeners;
+
+            Observer = function () {
+            }
+
+            // [--PUBLIC--] properties
+            var p = Observer.prototype;
+            p.listners = Array();
+
+            // [--PUBLIC--] functions
+            //增加event事件 ex addListener("loaded", loadedEvt);
+            p.addListener = function (commandName, callBack) {
+                this.listners[this.listners.length] = { f: callBack, n: commandName };
+            }
+            p.removeListener = function (callBack) {
+                var len = this.listners.length;
+                for (var i=0; i<len; i++) {
+                    if (this.listners[i].f === callBack) {
+                        delete (this.listners[i]);
+                    }
+                }
+            }
+            p.dispatchEvent = function (commandName, eventObj) {
+                var len = this.listners.length;
+                for (var i = 0; i < len; i++) {
+                    if (typeof this.listners[i].f === 'function') {
+                        if (this.listners[i].n == commandName) {
+                            this.listners[i].f(eventObj);
+                        }
+                    }
+                }
+            }
+
+            // test function
+            // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+            p.testFunction = function () {
+                var cevent = new CEvent("loaded", { value: "hello" }, 0, "extra");
+                this.dispatchEvent("loaded", cevent);
+            }
+
+            testns.Observer = Observer;
+        }());
+
+
+        // core event class
+        // ####################################################
+        (function (ns) {
+
+            CEvent = function (commandName, value, index, extra) {
+                this.commandName = commandName;
+                this.value = value;
+                this.index = index;
+                this.extra = extra;
+            }
+
+            // [--PUBLIC--] properties
+            var p = CEvent.prototype;
+            p.commandName = "";
+            p.value = null;
+            p.index = 0;
+            p.extra = null;
+
+            // [--PUBLIC--] functions
+            p.dump = function () {
+                return "commandName: " + this.commandName + " , value: " + this.value + " , index: " + this.index + " , extra : " + this.extra;
+            }
+
+           testns.CEvent = CEvent;
+
+        }());
+        // ####################################################
+
+
+        var obs = new testns.Observer();
+        obs.addListener("loaded", function (e) {
+            alert("callBack 1 " + e)
+        });
+        obs.addListener("loaded", function (e) {
+            alert("callBack 2 " + e.dump())
+        });
+        obs.addListener("progress", function (e) {
+            alert("callBack progress " + e)
+        });
+        obs.testFunction();
+       
+    </script>
+</body>
+</html>

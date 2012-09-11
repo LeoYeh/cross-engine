@@ -1,7 +1,9 @@
 ﻿//####################################################################################
 //ALIGN TOOL Setting
 //####################################################################################
-(function (ns) {
+//namespace
+this.viewjs = this.viewjs || {};
+(function () {
 
     /**
     * Store all alignment setting when item resizes
@@ -83,6 +85,5 @@
 
     }
 
-    ns.AlignSetting = AlignSetting;
-}(viewjs || (viewjs = {})));
-var viewjs;
+    viewjs.AlignSetting = AlignSetting;
+}());

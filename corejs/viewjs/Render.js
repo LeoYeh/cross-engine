@@ -74,7 +74,7 @@ Render.addFPSWatch = function (parent, x, y) {
 //-------------------------------------------------------------------
 //GLOBAL STATIC FLOAT ABSOLUTE POSITION DEBUG DIV 
 //-------------------------------------------------------------------
-function DebugView() { };
+function DebugView() {};
 DebugView.dom = null;
 DebugView.clearBtn = null;
 DebugView.msgs = [];

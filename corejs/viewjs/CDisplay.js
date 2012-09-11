@@ -1,10 +1,12 @@
-﻿//Immediate Functions (Called automatically) for NameSpace managements
-(function (ns) {
+﻿//namespace
+this.viewjs = this.viewjs || {};
+//Immediate Functions
+(function () {
 
     /**
-    * Base Display Class
+    * Base CDisplay Class
     **/
-    var Display = function () {
+    CDisplay = function () {
     }
 
     //-------------------------------------------------------------------
@@ -14,7 +16,7 @@
     //-------------------------------------------------------------------
     //PROPERTIES
     //-------------------------------------------------------------------
-    var p = Display.prototype;
+    var p = CDisplay.prototype = new viewjs.CDispatcher();
 
     /**
     * Dom Div elements serve as body
@@ -102,13 +104,13 @@
     // ALIGNMENTS, POSITIONING
     //-------------------------------------------------------------------
     p.setAlign = function (obj) {
-        this.alignSetting = new ns.AlignSetting();
+        this.alignSetting = new viewjs.AlignSetting();
         this.alignSetting.initialize(this, obj);
     };
    
 
     //-------------------------------------------------------------------
-    // DISPLAY MOVEMENT, ROTATION, SCALE, DEPTH
+    // CDisplay MOVEMENT, ROTATION, SCALE, DEPTH
     //-------------------------------------------------------------------
     p.setz = function (zto) {
         if (this.parent) {
@@ -204,6 +206,7 @@
     p.setSize = function (width, height) {
         this.width = width;
         this.height = height;
+        //尺寸縮放可能為 css % ex: 50% 如果為數字則加 px 值
         if (!isNaN(width)) width = width + "px";
         if (!isNaN(height)) height = height + "px";
         if (this.div == null) this.createDiv();
@@ -236,6 +239,6 @@
     }
 
     //set it to NameSpace
-    ns.Display = Display;
-}(viewjs || (viewjs = {})));
-var viewjs;
+    viewjs.CDisplay = CDisplay;
+
+}());

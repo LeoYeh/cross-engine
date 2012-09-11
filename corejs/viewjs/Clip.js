@@ -1,4 +1,6 @@
-﻿(function (ns) {
+﻿//namespace
+this.viewjs = this.viewjs || {};
+(function () {
 
     /**
     * Main Stage class
@@ -9,7 +11,7 @@
     //-------------------------------------------------------------------
     //PROPERTIES inherited from Display
     //-------------------------------------------------------------------
-    var p = Clip.prototype = new ns.Display();
+    var p = Clip.prototype = new viewjs.CDisplay();
     p.imgSrc = "";
     p.frameInfo = null; 
     p.clipData = null;
@@ -179,6 +181,6 @@
         }
     }
 
-    ns.Clip = Clip;
-}(viewjs || (viewjs = {})));
-var viewjs;
+    viewjs.Clip = Clip;
+
+}());

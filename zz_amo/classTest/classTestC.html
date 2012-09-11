@@ -1,0 +1,54 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script type="text/ecmascript">
+
+        // ###### 測試 class Public, private, static
+        this.testns = this.testns || {};
+
+        (function (ns) {
+
+            // [--PRIVATE--]
+            var privateName;
+
+            Car = function (name) {
+                Car.ADD_ONE();
+                privateName = name;
+            }
+
+            // [--PUBLIC--] properties
+            var p = Car.prototype;
+            p.horsePower = 0;
+
+            // [--PUBLIC--] functions
+            p.run = function () {
+                alert("car name is : " + privateName);
+            }
+
+
+            // [--STATIC--] 
+            // must be set after Car constructor class
+            Car.VERSION = 1.0;
+            Car.QUANTITY = 0;
+            Car.ADD_ONE = function () {
+                Car.QUANTITY++;
+            }
+
+            testns.Car = Car;
+
+        }());
+
+        var car = new testns.Car("test Name");
+        alert("try to access private name " + car.privateName);
+        car.run();
+        alert("static value car quantity " + testns.Car.QUANTITY);
+
+
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script type="text/ecmascript">
+
+        // ###### 設定class及繼承 inheritance 格式 ######
+       this.testns = this.testns || {};
+
+        (function (ns) {
+
+            // !!! parent class constructor pass no parameters 
+            // java OOP parent class 建立不做任何參數定義，避免child class建立時執行設定prototype重複function
+            // ex: var p = Audi.prototype = new testns.Car();
+            Car = function () {
+            }
+
+            //Class所有properties 與 function 設定至prototype
+            var p = Car.prototype;
+            p.horsePower = 0;
+
+            //Class functions
+            p.run = function () {
+                alert("car horsePower is : " + this.horsePower);
+            }
+            
+            testns.Car = Car;
+
+        }());
+
+
+        // ###### child class Audi   #########################
+        (function (ns) {
+
+            //[A] 設定child class 
+            Audi = function () {
+            }
+            //[B] inheritance From Car
+            var p = Audi.prototype = new testns.Car();
+
+            testns.Audi = Audi;
+
+        }());
+        // ####################################################
+
+
+        // ###### child class BMW   ###########################
+        (function (ns) {
+
+            //[A] 設定child class 
+            BMW = function () {
+            }
+            //[B] inheritance From Car
+            var p = BMW.prototype = new testns.Car();
+            p.run = function () {
+                alert(" BMW child override RUN ~ " + this.horsePower);
+            }
+
+            testns.BMW = BMW;
+
+        }());
+        // ####################################################
+
+        //新建Car 物件測試
+        var car = new testns.Car();
+        car.horsePower = 50;
+        car.run();
+
+        var audi = new testns.Audi();
+        audi.horsePower = 80;
+        audi.run();
+
+        var bmw = new testns.BMW();
+        bmw.horsePower = 90;
+        bmw.run();
+
+    </script>
+</body>
+</html>

@@ -1,7 +1,9 @@
 ﻿//####################################################################################
 //
 //####################################################################################
-(function (ns) {
+//namespace
+this.viewjs = this.viewjs || {};
+(function () {
 
     /**********************************************************
     FOR AssetLoading and Managements
@@ -86,6 +88,5 @@
         }
     }
 
-    ns.AssetLoader = AssetLoader;
-}(viewjs || (viewjs = {})));
-var viewjs;
+    viewjs.AssetLoader = AssetLoader;
+}());

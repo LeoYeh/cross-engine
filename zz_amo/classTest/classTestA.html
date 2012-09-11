@@ -1,0 +1,42 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script type="text/ecmascript">
+
+        // ###### 設定class及namespace 格式 ######
+
+        // [A] namespace declare
+        this.testns = this.testns || {};
+
+        (function () {
+
+            //[B] 設定class body 
+            Car = function (horsePower) {
+                this.horsePower = horsePower;
+            }
+
+            //Class所有properties 與 function 設定至prototype
+            var p = Car.prototype;
+            p.horsePower = 0;
+
+            p.run = function () {
+                alert("car horsePower is : " + this.horsePower);
+            }
+
+            //[C] 將設定class置入namespace
+            testns.Car = Car;
+
+        }());
+
+
+        //新建Car 物件測試
+        //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+        var car = new testns.Car(100);
+        car.run();
+
+    </script>
+</body>
+</html>

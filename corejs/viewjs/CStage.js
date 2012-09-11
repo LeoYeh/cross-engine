@@ -1,4 +1,6 @@
-﻿(function (ns) {
+﻿//namespace
+this.viewjs = this.viewjs || {};
+(function () {
 
     /**
     * Main Stage class
@@ -14,7 +16,7 @@
     //-------------------------------------------------------------------
     //PROPERTIES inherited from Display
     //-------------------------------------------------------------------
-    var p = CStage.prototype = new ns.Display();
+    var p = CStage.prototype = new viewjs.CDisplay();
     p.alignTool = null;
     p.minWidth = 480;
     p.minHeight = 800;
@@ -43,6 +45,7 @@
     }
 
     p.alignStage = function (self) {
+        //stage alignment update
         var screenW = $(window).width();
         var screenH = $(window).height();
         var sizeW = screenW;
@@ -54,6 +57,7 @@
         if (this.alignSetting != null) {
             this.setSize(sizeW, sizeH);
         }
+        //loop all children and update its alignment setting
         if (this.children != null) {
             var len = this.children.length;
             for (var s = 0; s < len; s++) {
@@ -94,6 +98,6 @@
         this.scale(usep, usep);
      }
 
-    ns.CStage = CStage;
-}(viewjs || (viewjs = {})));
-var viewjs;
+    viewjs.CStage = CStage;
+
+}());

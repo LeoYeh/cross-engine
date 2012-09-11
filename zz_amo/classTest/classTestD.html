@@ -1,0 +1,72 @@
+﻿<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <script type="text/ecmascript">
+
+        // ###### javascript function call back 測試
+        this.testns = this.testns || {};
+
+        (function (ns) {
+
+            Car = function () {
+            }
+
+            // [--PUBLIC--] properties
+            var p = Car.prototype;
+            p.horsePower = 0;
+
+            // [--PUBLIC--] functions
+            p.run = function () {
+                alert("car name is : " + privateName);
+            }
+
+            //##############################################################
+            //[A.] function with call back setup
+            //##############################################################
+            p.loadItem = function (item, callback) {
+                //do some stuff with item~
+                setTimeout(function () {
+                    var itemFound = "FOUND: "+item;
+                    if (typeof callback === "function") callback(itemFound);
+                }, 1000);
+            }
+
+            //##############################################################
+            //[B.] function returns other function
+            //##############################################################
+            p.nextStep = function (item) {
+                switch (item) {
+                    case "loadNext":
+                        return this.loadNext;
+                        break;
+                    case "loadPrevious":
+                        return function () { alert("dynamic build loadPrevious"); };
+                        break;
+                }
+            }
+            p.loadNext = function () {
+                alert("call loadNext");
+            }
+
+            testns.Car = Car;
+
+        }());
+        
+        //[A.] function with call back setup
+        var car = new testns.Car();
+        car.loadItem("~~~item~~~", function (result) {
+            alert("pssed back\n"+result);
+        });
+
+        //[B.] function returns other function
+        var resultFunction = car.nextStep("loadNext");
+        resultFunction();
+        var resultFunction2 = car.nextStep("loadPrevious");
+        resultFunction2();
+
+    </script>
+</body>
+</html>
