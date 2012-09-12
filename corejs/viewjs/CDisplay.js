@@ -235,7 +235,7 @@ this.viewjs = this.viewjs || {};
         properties.onUpdate = function () {
             self.render();
         };
-        TweenMax.to(this, seconds, properties);
+        TweenMax.to(self.div, seconds, properties);
     }
 
     //set it to NameSpace
