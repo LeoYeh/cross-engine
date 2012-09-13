@@ -4,7 +4,7 @@ SourceInclude.includeCore = function () {
     //!!!! import 順序由parent至child
     document.write("<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>");
     document.write("<script type='text/javascript' src='../corejs/Util.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/AlignTool.js'></script>");
+    document.write("<script type='text/javascript' src='../corejs/viewjs/AlignSetting.js'></script>");
     document.write("<script type='text/javascript' src='../corejs/viewjs/CDispatcher.js'></script>");
     document.write("<script type='text/javascript' src='../corejs/viewjs/CEvent.js'></script>");
     document.write("<script type='text/javascript' src='../corejs/viewjs/CDisplay.js'></script>");
