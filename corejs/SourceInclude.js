@@ -12,6 +12,13 @@ SourceInclude.includeCore = function () {
     document.write("<script type='text/javascript' src='../corejs/viewjs/CStage.js'></script>");
     document.write("<script type='text/javascript' src='../corejs/viewjs/AssetLoader.js'></script>");
     document.write("<script type='text/javascript' src='../corejs/viewjs/Render.js'></script>");
+	/* add 2012,09,15 by ly  */
+	/* util  */
+    document.write("<script type='text/javascript' src='../corejs/util/CDpi.js'></script>");
+    document.write("<script type='text/javascript' src='../corejs/util/CVersion.js'></script>");
+	/* interation  */
+    document.write("<script type='text/javascript' src='../corejs/lib/jquery.touchwipe.min.js'></script>");
+    document.write("<script type='text/javascript' src='../corejs/interaction/DevieDetector.js'></script>");
 }
 SourceInclude.includeTween = function () {
     document.write("<script type='text/javascript' src='../corejs/greensock/TweenMax.min.js'></script>");
