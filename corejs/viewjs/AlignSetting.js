@@ -52,6 +52,7 @@ this.viewjs = this.viewjs || {};
         }
         if (isNaN(finalh)) {
             finalh = screenH * Number(finalh.replace("%", "")) / 100;
+            
         }
 
         var axto = 0;

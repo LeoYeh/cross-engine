@@ -1,35 +1,41 @@
 ﻿function SourceInclude() { };
-SourceInclude.includeCore = function () {
 
+SourceInclude.baseURL = "../";
+
+SourceInclude.includeCore = function () {
     //!!!! import 順序由parent至child
     document.write("<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/Util.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/AlignSetting.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/CDispatcher.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/CEvent.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/CDisplay.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/Clip.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/CStage.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/AssetLoader.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/viewjs/Render.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/Util.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/viewjs/AlignSetting.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/viewjs/CDispatcher.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/viewjs/CEvent.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/viewjs/CDisplay.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/viewjs/Clip.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/viewjs/CStage.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/viewjs/AssetLoader.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/viewjs/Render.js'></script>");
+}
+SourceInclude.includeUI = function () {
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/ui/CButton.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/ui/CScroll.js'></script>");
 }
 SourceInclude.includeTween = function () {
-    document.write("<script type='text/javascript' src='../corejs/greensock/TweenMax.min.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/greensock/easing/EasePack.min.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/greensock/TweenMax.min.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/greensock/easing/EasePack.min.js'></script>");
 }
 SourceInclude.includeGameCss = function () {
-    document.write("<LINK href='../corecss/normalize.css' type='text/css' rel='stylesheet'/> ");
-    document.write("<LINK href='../corecss/coreGame.css' type='text/css' rel='stylesheet'/> ");
+    document.write("<LINK href='" + SourceInclude.baseURL + "corecss/normalize.css' type='text/css' rel='stylesheet'/> ");
+    document.write("<LINK href='" + SourceInclude.baseURL + "corecss/coreGame.css' type='text/css' rel='stylesheet'/> ");
 }
 SourceInclude.includeMediaCss = function () {
-    document.write("<LINK href='../corecss/normalize.css' type='text/css' rel='stylesheet'/> ");
-    document.write("<LINK href='../corecss/coreMedia.css' type='text/css' rel='stylesheet'/> ");
+    document.write("<LINK href='" + SourceInclude.baseURL + "corecss/normalize.css' type='text/css' rel='stylesheet'/> ");
+    document.write("<LINK href='" + SourceInclude.baseURL + "corecss/coreMedia.css' type='text/css' rel='stylesheet'/> ");
 }
 
 SourceInclude.includeBox2d = function () {
-    document.write("<script type='text/javascript' src='../corejs/box2d/Box2d.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/box2d/BoxUtil.js'></script>");
-    document.write("<script type='text/javascript' src='../corejs/box2d/BoxGame.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/box2d/Box2d.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/box2d/BoxUtil.js'></script>");
+    document.write("<script type='text/javascript' src='" + SourceInclude.baseURL + "corejs/box2d/BoxGame.js'></script>");
 }
 
 SourceInclude.includeBox2dClass = function () {

@@ -37,10 +37,19 @@ this.viewjs = this.viewjs || {};
     p.children = null;
     p.alignSetting = null;
 
-    p.useDiv = function (divName) {
+    p.useDiv = function (divName, absolutePos) {
         if (this.div == null) {
-            this.div = $("#"+divName);
-            this.div.css({ "display": "block", "position": "absolute" });
+            if (typeof (divName) == "string") {
+                this.div = $("#" + divName);
+                this.name = divName;
+            } else {
+                this.div = divName;
+                this.name = this.div.attr("id");
+            }
+            if (absolutePos == true || absolutePos==undefined) {
+                this.div.css({ "display": "block", "position": "absolute" });
+            }
+
         }
     }
     p.createDiv = function () {
@@ -66,11 +75,22 @@ this.viewjs = this.viewjs || {};
     p.addChild = function (newOne) {
         if (newOne == null) return null;
         if (this.children == null) this.children = [];
-        this.children.push(newOne);
-        $(this.div).append(newOne.div);
+        //see if this div is already the child in html
+        var parentId = document.getElementById(newOne.name).parentNode.id;
+        if (parentId == this.name) return;
+        if (newOne.parent == this) return;
+
+        //newOne remove parent, parent in CDisplay is used for z-index sorting and updating
         if (newOne.parent != null) newOne.parent.removeChild(newOne);
+
+        this.children.push(newOne);
+        DebugView.trace(this.name + " add: " + newOne.name + " childen len: " + this.children.length + " newOne parent? " + parentId);
+
+        //append html tag
+        $(this.div).append(newOne.div);
+
         newOne.parent = this;
-        newOne.setz(this.children.length);
+        newOne.setz(this.z+this.children.length);
         return newOne;
     }
     p.removeChild = function (removeOne) {
@@ -204,13 +224,17 @@ this.viewjs = this.viewjs || {};
         }
     }
     p.setSize = function (width, height) {
+
         this.width = width;
         this.height = height;
+        if (isNaN(width)) this.width = this.width.replace("px", "");
+        if (isNaN(height)) this.height = this.height.replace("px", "");
+
         //尺寸縮放可能為 css % ex: 50% 如果為數字則加 px 值
         if (!isNaN(width)) width = width + "px";
         if (!isNaN(height)) height = height + "px";
         if (this.div == null) this.createDiv();
-        this.div.css({"width": width, "height": height });
+        this.div.css({ "width": width, "height": height });
     }
     p.setMask = function () {
         $(this.div).css({

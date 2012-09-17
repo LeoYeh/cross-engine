@@ -27,6 +27,13 @@ this.viewjs = this.viewjs || {};
 
     p.initialize = function (useDiv, bgColor, minWidth, minHeight, maxWidth, maxHeight) {
 
+        if (CStage.instance != null) {
+            alert("CStage instance already exist in singleton stage, abort");
+            return;
+        }
+
+        CStage.instance = this;
+
         this.minWidth = minWidth;
         this.minHeight = minHeight;
         this.maxWidth = minWidth;
@@ -82,7 +89,7 @@ this.viewjs = this.viewjs || {};
     p.playUpdate = function (timeDiff) {
         var len = this.children.length;
         for (var s = 0; s < len; s++) {
-            if (this.children[s] instanceof viewjs.Clip) {
+            if (this.children[s].playUpdate) {
                 this.children[s].playUpdate(timeDiff);
             }
         }
@@ -99,5 +106,6 @@ this.viewjs = this.viewjs || {};
      }
 
     viewjs.CStage = CStage;
+    CStage.instance = null;
 
 }());

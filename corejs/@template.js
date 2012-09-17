@@ -1,22 +1,21 @@
 ﻿//namespace
-this.mvcjs = this.mvcjs || {};
+this.viewjs = this.viewjs || {};
 (function () {
 
     /**
-    * 所有AIProxy, AICommand, AIMediator的base Class
-    * 涵蓋所有統一擁有的mvc pattern事件運用function
+    * Button Like Class, can be used for various button Effect
     **/
-    var MvcBase = function () {
+    var CButton = function () {
     }
 
     // [--PRIVATE--]
+    var listeners;
 
     //-------------------------------------------------------------------
     //[--PUBLIC--] Properties | Functions
     //-------------------------------------------------------------------
-    var p = MvcBase.prototype;
+    var p = CButton.prototype = new viewjs.CDispatcher();
 
-
-    mvcjs.MvcBase = MvcBase;
+    viewjs.CButton = CButton;
 
 }());

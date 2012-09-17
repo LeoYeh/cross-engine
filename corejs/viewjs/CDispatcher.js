@@ -8,13 +8,11 @@ this.viewjs = this.viewjs || {};
     var CDispatcher = function () {
     }
 
-    // [--PRIVATE--]
-    var listeners;
-
     //-------------------------------------------------------------------
     //[--PUBLIC--] Properties | Functions
     //-------------------------------------------------------------------
     var p = CDispatcher.prototype;
+    p.listeners;
 
     p.addListener = function (commandName, callBack) {
         if (this.listeners == null) this.listeners = new Array();
